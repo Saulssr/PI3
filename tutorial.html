@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AccessScan — Como começar</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,300&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --border: #1e1e2e;
+    --accent: #7fff6e;
+    --accent-dim: #3a6635;
+    --warn: #ffcf4e;
+    --text: #e8e8f0;
+    --muted: #5a5a7a;
+    --mono: 'DM Mono', monospace;
+    --serif: 'Fraunces', Georgia, serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(127,255,110,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(127,255,110,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .main-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+  }
+
+  /* ── Back link ── */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    margin-bottom: 40px;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover { color: var(--accent); }
+
+  /* ── Header ── */
+  header { margin-bottom: 52px; animation: fadeDown 0.6s ease both; }
+
+  .badge-label {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent-dim);
+    padding: 4px 10px;
+    border-radius: 2px;
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .subtitle {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 13px;
+    max-width: 500px;
+    line-height: 1.7;
+  }
+
+  /* ── Steps ── */
+  .steps { display: flex; flex-direction: column; gap: 20px; }
+
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 32px;
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    animation: fadeUp 0.5s ease both;
+    transition: border-color 0.2s;
+  }
+
+  .step-card:hover { border-color: var(--accent-dim); }
+
+  .step-card:nth-child(1) { animation-delay: 0.05s; }
+  .step-card:nth-child(2) { animation-delay: 0.10s; }
+  .step-card:nth-child(3) { animation-delay: 0.15s; }
+  .step-card:nth-child(4) { animation-delay: 0.20s; }
+
+  .step-number {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 40px;
+    opacity: 0.5;
+  }
+
+  .step-body { flex: 1; }
+
+  .step-title {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 300;
+    font-style: italic;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+
+  .step-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 0;
+  }
+
+  .step-desc strong { color: var(--text); }
+
+  .step-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--accent);
+    text-decoration: none;
+    border: 1px solid var(--accent-dim);
+    padding: 7px 14px;
+    border-radius: 6px;
+    transition: background 0.2s;
+  }
+
+  .step-link:hover { background: rgba(127,255,110,0.08); }
+
+  /* ── Code block ── */
+  .code-block {
+    margin-top: 14px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 18px;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.03em;
+    word-break: break-all;
+  }
+
+  /* ── Tip box ── */
+  .tip-box {
+    margin-top: 40px;
+    padding: 20px 24px;
+    background: rgba(127,255,110,0.05);
+    border: 1px solid var(--accent-dim);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.8;
+    animation: fadeUp 0.5s 0.25s ease both;
+  }
+
+  .tip-box strong { color: var(--accent); }
+
+  /* ── CTA ── */
+  .cta-section {
+    margin-top: 40px;
+    text-align: center;
+    animation: fadeUp 0.5s 0.3s ease both;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent);
+    color: #0a0a0f;
+    border: none;
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    padding: 16px 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+
+  .cta-btn:hover { opacity: 0.88; color: #0a0a0f; }
+  .cta-btn:active { transform: scale(0.97); }
+
+  /* ── Animations ── */
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-16px) } to { opacity:1; transform:translateY(0) } }
+  @keyframes fadeUp   { from { opacity:0; transform:translateY(14px)  } to { opacity:1; transform:translateY(0) } }
+</style>
+</head>
+<body>
+<div class="main-wrap">
+
+  <a href="index.html" class="back-link">← Voltar para o AccessScan</a>
+
+  <header>
+    <div class="badge-label">✦ Guia de Início</div>
+    <h1>Como usar o<br><span>AccessScan</span></h1>
+    <p class="subtitle">Siga os passos abaixo para obter sua chave gratuita e começar a analisar a acessibilidade de qualquer site.</p>
+  </header>
+
+  <div class="steps">
+
+    <!-- Passo 1 -->
+    <div class="step-card">
+      <div class="step-number">1</div>
+      <div class="step-body">
+        <div class="step-title">Crie uma conta gratuita no Groq</div>
+        <p class="step-desc">
+          O AccessScan utiliza a inteligência artificial do Groq para analisar os sites.
+          O serviço é <strong>100% gratuito</strong> para uso pessoal — não é necessário cartão de crédito.
+          Clique no botão abaixo para acessar o site do Groq e criar sua conta com e-mail ou Google.
+        </p>
+        <a href="https://console.groq.com" target="_blank" class="step-link">
+          ↗ Acessar console.groq.com
+        </a>
+      </div>
+    </div>
+
+    <!-- Passo 2 -->
+    <div class="step-card">
+      <div class="step-number">2</div>
+      <div class="step-body">
+        <div class="step-title">Acesse a seção de chaves de API</div>
+        <p class="step-desc">
+          Após fazer login, no menu lateral esquerdo clique em <strong>"API Keys"</strong>.
+          Você verá a tela de gerenciamento de chaves.
+        </p>
+      </div>
+    </div>
+
+    <!-- Passo 3 -->
+    <div class="step-card">
+      <div class="step-number">3</div>
+      <div class="step-body">
+        <div class="step-title">Gere sua chave gratuita</div>
+        <p class="step-desc">
+          Clique no botão <strong>"Create API Key"</strong>, dê um nome qualquer (ex: <em>accessscan</em>)
+          e confirme. Uma chave será gerada no formato:
+        </p>
+        <div class="code-block">gsk_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>
+        <p class="step-desc mt-3">
+          ⚠ <strong>Copie a chave imediatamente</strong> — ela só aparece uma vez. Se fechar sem copiar, precisará gerar outra.
+        </p>
+      </div>
+    </div>
+
+    <!-- Passo 4 -->
+    <div class="step-card">
+      <div class="step-number">4</div>
+      <div class="step-body">
+        <div class="step-title">Cole a chave no AccessScan</div>
+        <p class="step-desc">
+          Volte ao AccessScan, cole a chave no campo <strong>"Chave da API Groq"</strong>
+          e clique em <strong>"Salvar"</strong>. A chave ficará guardada no seu navegador —
+          você não precisará repetir esse processo nas próximas visitas.
+        </p>
+        <p class="step-desc mt-2">
+          Agora é só digitar o endereço do site que deseja analisar e clicar em <strong>"→ Escanear"</strong>.
+        </p>
+      </div>
+    </div>
+
+  </div><!-- /steps -->
+
+  <div class="tip-box">
+    <strong>💡 Dica:</strong> A chave gratuita do Groq permite centenas de análises por dia.
+    Para uso em sala de aula, recomendamos que o professor crie uma única chave e a compartilhe com a turma —
+    ou que cada aluno crie a sua própria conta, o que é rápido e não requer cartão de crédito.
+  </div>
+
+  <div class="cta-section">
+    <a href="index.html" class="cta-btn">→ Ir para o AccessScan</a>
+  </div>
+
+</div>
+</body>
+</html>
